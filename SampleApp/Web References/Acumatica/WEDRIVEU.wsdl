@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.acumatica.com/generic/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.acumatica.com/generic/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.acumatica.com/generic/">
+      <s:complexType name="ProcessResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:ProcessStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="Seconds" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ProcessStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="NotExists" />
+          <s:enumeration value="InProcess" />
+          <s:enumeration value="Completed" />
+          <s:enumeration value="Aborted" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetScenario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="scenario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetScenarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetScenarioResult" type="tns:ArrayOfCommand" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCommand">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Command" nillable="true" type="tns:Command" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Command">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FieldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ObjectName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" default="false" name="Commit" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" default="false" name="IgnoreError" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="LinkedCommand" type="tns:Command" />
+          <s:element minOccurs="0" maxOccurs="1" name="Descriptor" type="tns:ElementDescriptor" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ElementDescriptor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" default="false" name="IsDisabled" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" default="false" name="IsRequired" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" default="String" name="ElementType" type="tns:ElementTypes" />
+          <s:element minOccurs="0" maxOccurs="1" default="0" name="LengthLimit" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="InputMask" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayRules" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AllowedValues" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ElementTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="String" />
+          <s:enumeration value="AsciiString" />
+          <s:enumeration value="StringSelector" />
+          <s:enumeration value="ExplicitSelector" />
+          <s:enumeration value="Number" />
+          <s:enumeration value="Option" />
+          <s:enumeration value="WideOption" />
+          <s:enumeration value="Calendar" />
+          <s:enumeration value="Action" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="SchemaMode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Basic" />
+          <s:enumeration value="Detailed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EveryValue">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Key">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Action">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Field">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Value">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Field">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" default="false" name="IsError" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Answer">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="RowNumber">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="NewRow">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DeleteRow">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Parameter">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Command" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Attachment">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Field" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfFilter">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Filter" nillable="true" type="tns:Filter" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Filter">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Field" type="tns:Field" />
+          <s:element minOccurs="1" maxOccurs="1" name="Condition" type="tns:FilterCondition" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value2" />
+          <s:element minOccurs="1" maxOccurs="1" name="OpenBrackets" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CloseBrackets" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Operator" type="tns:FilterOperator" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="FilterCondition">
+        <s:restriction base="s:string">
+          <s:enumeration value="Equals" />
+          <s:enumeration value="NotEqual" />
+          <s:enumeration value="Greater" />
+          <s:enumeration value="GreaterOrEqual" />
+          <s:enumeration value="Less" />
+          <s:enumeration value="LessOrEqual" />
+          <s:enumeration value="Contain" />
+          <s:enumeration value="StartsWith" />
+          <s:enumeration value="EndsWith" />
+          <s:enumeration value="NotContain" />
+          <s:enumeration value="Between" />
+          <s:enumeration value="IsNull" />
+          <s:enumeration value="IsNotNull" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="FilterOperator">
+        <s:restriction base="s:string">
+          <s:enumeration value="And" />
+          <s:enumeration value="Or" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LoginResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="tns:ErrorCode" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Session" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ErrorCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="OK" />
+          <s:enumeration value="INVALID_CREDENTIALS" />
+          <s:enumeration value="INTERNAL_ERROR" />
+          <s:enumeration value="INVALID_API_VERSION" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="tns:LoginResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetBusinessDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="date" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetBusinessDateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SetLocaleName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="localeName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetLocaleNameResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SetSchemaMode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="mode" type="tns:SchemaMode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSchemaModeResponse">
+        <s:complexType />
+      </s:element>
+      <s:complexType name="AR303010Content">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Actions" type="tns:AR303010Actions" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentMethodSelection" type="tns:AR303010PaymentMethodSelection" />
+          <s:element minOccurs="0" maxOccurs="1" name="BillingInfoContactInformationSameAsMain" type="tns:AR303010BillingInfoContactInformationSameAsMain" />
+          <s:element minOccurs="0" maxOccurs="1" name="BillingInfoAddressSameAsMain" type="tns:AR303010BillingInfoAddressSameAsMain" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentMethodSelectionInputMode" type="tns:AR303010PaymentMethodSelectionInputMode" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentMethodDetails" type="tns:AR303010PaymentMethodDetails" />
+          <s:element minOccurs="0" maxOccurs="1" name="BillingInfoAddress" type="tns:AR303010BillingInfoAddress" />
+          <s:element minOccurs="0" maxOccurs="1" name="BillingInfoContactInformation" type="tns:AR303010BillingInfoContactInformation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010Actions">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Save" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cancel" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Insert" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="CopyDocumentCopyPaste" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="PasteDocumentCopyPaste" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="SaveTemplateCopyPaste" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Delete" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="First" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Previous" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Next" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="Last" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="ViewBillAddressOnMap" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="ValidateAddresses" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreateCCPaymentMethodHF" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="SyncCCPaymentMethods" type="tns:Action" />
+          <s:element minOccurs="0" maxOccurs="1" name="ManageCCPaymentMethodHF" type="tns:Action" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodSelection">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Customer" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentMethod" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="HasBillingInfo" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="TokenID" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Active" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProcCenterID" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="CustomerProfileID" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="CashAccount" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardAccountNo" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="NoteText" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010PaymentMethodSelectionServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodSelectionServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ParameterBAccountID" type="tns:Parameter" />
+          <s:element minOccurs="0" maxOccurs="1" name="KeyCustomer" type="tns:Key" />
+          <s:element minOccurs="0" maxOccurs="1" name="EveryCustomer" type="tns:EveryValue" />
+          <s:element minOccurs="0" maxOccurs="1" name="KeyTokenID" type="tns:Key" />
+          <s:element minOccurs="0" maxOccurs="1" name="EveryTokenID" type="tns:EveryValue" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterAddressLine1" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterAddressLine2" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterPostalCode" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterPhone1" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterCity" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterCountry" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterTaxRegistrationID" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterCurrencyID" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterAttention" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterCustomerClass" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="FilterStatus" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoContactInformationSameAsMain">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SameAsMain" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010BillingInfoContactInformationSameAsMainServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoContactInformationSameAsMainServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoAddressSameAsMain">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SameAsMain" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010BillingInfoAddressSameAsMainServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoAddressSameAsMainServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodSelectionInputMode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="InputMode" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010PaymentMethodSelectionInputModeServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodSelectionInputModeServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010PaymentMethodDetailsServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PaymentMethodDetailsServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="KeyDescription" type="tns:Key" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewRow" type="tns:NewRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="RowNumber" type="tns:RowNumber" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoAddress">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Validated" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLine1" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddressLine2" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostalCode" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010BillingInfoAddressServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoAddressServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoContactInformation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DisplayName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone1" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Phone2" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fax" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="Web" type="tns:Field" />
+          <s:element minOccurs="0" maxOccurs="1" name="ServiceCommands" type="tns:AR303010BillingInfoContactInformationServiceCommands" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010BillingInfoContactInformationServiceCommands">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="DeleteRow" type="tns:DeleteRow" />
+          <s:element minOccurs="0" maxOccurs="1" name="DialogAnswer" type="tns:Answer" />
+          <s:element minOccurs="0" maxOccurs="1" name="Attachment" type="tns:Attachment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010PrimaryKey">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Customer" type="tns:Value" />
+          <s:element minOccurs="0" maxOccurs="1" name="TokenID" type="tns:Value" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AR303010Clear">
+        <s:complexType />
+      </s:element>
+      <s:element name="AR303010ClearResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AR303010GetProcessStatus">
+        <s:complexType />
+      </s:element>
+      <s:element name="AR303010GetProcessStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProcessStatusResult" type="tns:ProcessResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010GetSchema">
+        <s:complexType />
+      </s:element>
+      <s:element name="AR303010GetSchemaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSchemaResult" type="tns:AR303010Content" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010SetSchema">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="schema" type="tns:AR303010Content" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010SetSchemaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AR303010Export">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="commands" type="tns:ArrayOfCommand" />
+            <s:element minOccurs="0" maxOccurs="1" name="filters" type="tns:ArrayOfFilter" />
+            <s:element minOccurs="1" maxOccurs="1" name="topCount" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="includeHeaders" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="breakOnError" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010ExportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ExportResult" type="tns:ArrayOfArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010Import">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="commands" type="tns:ArrayOfCommand" />
+            <s:element minOccurs="0" maxOccurs="1" name="filters" type="tns:ArrayOfFilter" />
+            <s:element minOccurs="0" maxOccurs="1" name="data" type="tns:ArrayOfArrayOfString" />
+            <s:element minOccurs="1" maxOccurs="1" name="includedHeaders" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="breakOnError" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="breakOnIncorrectTarget" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AR303010ImportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImportResult" type="tns:AR303010ArrayOfImportResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AR303010ImportResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Processed" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Error" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Keys" type="tns:AR303010PrimaryKey" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AR303010ArrayOfImportResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ImportResult" nillable="true" type="tns:AR303010ImportResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AR303010Submit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="commands" type="tns:ArrayOfCommand" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AR303010ArrayOfContent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Content" nillable="true" type="tns:AR303010Content" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AR303010SubmitResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitResult" type="tns:AR303010ArrayOfContent" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetScenarioSoapIn">
+    <wsdl:part name="parameters" element="tns:GetScenario" />
+  </wsdl:message>
+  <wsdl:message name="GetScenarioSoapOut">
+    <wsdl:part name="parameters" element="tns:GetScenarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetBusinessDateSoapIn">
+    <wsdl:part name="parameters" element="tns:SetBusinessDate" />
+  </wsdl:message>
+  <wsdl:message name="SetBusinessDateSoapOut">
+    <wsdl:part name="parameters" element="tns:SetBusinessDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetLocaleNameSoapIn">
+    <wsdl:part name="parameters" element="tns:SetLocaleName" />
+  </wsdl:message>
+  <wsdl:message name="SetLocaleNameSoapOut">
+    <wsdl:part name="parameters" element="tns:SetLocaleNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSchemaModeSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSchemaMode" />
+  </wsdl:message>
+  <wsdl:message name="SetSchemaModeSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSchemaModeResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ClearSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010Clear" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ClearSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010ClearResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010GetProcessStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010GetProcessStatus" />
+  </wsdl:message>
+  <wsdl:message name="AR303010GetProcessStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010GetProcessStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010GetSchemaSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010GetSchema" />
+  </wsdl:message>
+  <wsdl:message name="AR303010GetSchemaSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010GetSchemaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010SetSchemaSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010SetSchema" />
+  </wsdl:message>
+  <wsdl:message name="AR303010SetSchemaSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010SetSchemaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ExportSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010Export" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ExportSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010ExportResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ImportSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010Import" />
+  </wsdl:message>
+  <wsdl:message name="AR303010ImportSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010ImportResponse" />
+  </wsdl:message>
+  <wsdl:message name="AR303010SubmitSoapIn">
+    <wsdl:part name="parameters" element="tns:AR303010Submit" />
+  </wsdl:message>
+  <wsdl:message name="AR303010SubmitSoapOut">
+    <wsdl:part name="parameters" element="tns:AR303010SubmitResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ScreenSoap">
+    <wsdl:operation name="GetScenario">
+      <wsdl:input message="tns:GetScenarioSoapIn" />
+      <wsdl:output message="tns:GetScenarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetBusinessDate">
+      <wsdl:input message="tns:SetBusinessDateSoapIn" />
+      <wsdl:output message="tns:SetBusinessDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLocaleName">
+      <wsdl:input message="tns:SetLocaleNameSoapIn" />
+      <wsdl:output message="tns:SetLocaleNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaMode">
+      <wsdl:input message="tns:SetSchemaModeSoapIn" />
+      <wsdl:output message="tns:SetSchemaModeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Clear">
+      <wsdl:input message="tns:AR303010ClearSoapIn" />
+      <wsdl:output message="tns:AR303010ClearSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetProcessStatus">
+      <wsdl:input message="tns:AR303010GetProcessStatusSoapIn" />
+      <wsdl:output message="tns:AR303010GetProcessStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetSchema">
+      <wsdl:input message="tns:AR303010GetSchemaSoapIn" />
+      <wsdl:output message="tns:AR303010GetSchemaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010SetSchema">
+      <wsdl:input message="tns:AR303010SetSchemaSoapIn" />
+      <wsdl:output message="tns:AR303010SetSchemaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Import">
+      <wsdl:input message="tns:AR303010ImportSoapIn" />
+      <wsdl:output message="tns:AR303010ImportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Export">
+      <wsdl:input message="tns:AR303010ExportSoapIn" />
+      <wsdl:output message="tns:AR303010ExportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Submit">
+      <wsdl:input message="tns:AR303010SubmitSoapIn" />
+      <wsdl:output message="tns:AR303010SubmitSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScreenSoap" type="tns:ScreenSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetScenario">
+      <soap:operation soapAction="http://www.acumatica.com/generic/GetScenario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://www.acumatica.com/generic/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetBusinessDate">
+      <soap:operation soapAction="http://www.acumatica.com/generic/SetBusinessDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLocaleName">
+      <soap:operation soapAction="http://www.acumatica.com/generic/SetLocaleName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaMode">
+      <soap:operation soapAction="http://www.acumatica.com/generic/SetSchemaMode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Clear">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/Clear" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetProcessStatus">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/GetProcessStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetSchema">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/GetSchema" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010SetSchema">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/SetSchema" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Export">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/Export" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Import">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/Import" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Submit">
+      <soap:operation soapAction="http://www.acumatica.com/generic/AR303010/Submit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ScreenSoap12" type="tns:ScreenSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetScenario">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/GetScenario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetBusinessDate">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/SetBusinessDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLocaleName">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/SetLocaleName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSchemaMode">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/SetSchemaMode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Clear">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/Clear" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetProcessStatus">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/GetProcessStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010GetSchema">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/GetSchema" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010SetSchema">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/SetSchema" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Export">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/Export" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Import">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/Import" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AR303010Submit">
+      <soap12:operation soapAction="http://www.acumatica.com/generic/AR303010/Submit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Screen">
+    <wsdl:port name="ScreenSoap" binding="tns:ScreenSoap">
+      <soap:address location="https://acumatica.velixo.com/Soap/WEDRIVEU.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ScreenSoap12" binding="tns:ScreenSoap12">
+      <soap12:address location="https://acumatica.velixo.com/Soap/WEDRIVEU.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SampleApp.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SampleApp_AR303010_Screen" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://acumatica.velixo.com/Soap/AR303010.asmx</Value>
+    </Setting>
+    <Setting Name="SampleApp_Acumatica_Screen" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://acumatica.velixo.com/Soap/WEDRIVEU.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
